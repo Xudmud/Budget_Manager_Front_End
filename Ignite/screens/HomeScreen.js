@@ -1,19 +1,42 @@
 import React from 'react';
 import {
   Image,
-  Platform,
-  ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   TextInput,
 } from 'react-native';
+import { submitLogin } from '../actions/authActions';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
+  constructor(props){
+    super(props);
+    this.updateDetails = this.updateDetails.bind(this);
+    this.login = this.login.bind(this);
+
+    this.state = {
+        username: '',
+        password: ''
+    };
+  }
+
+  updateDetails(){
+    let updateDetails = Object.assign({}, this.state.details);
+
+    updateDetails[event.target.id] = event.target.value;
+    this.setState({
+      details: updateDetails
+    });
+  }
+
+  login() {
+    const {dispatch} = this.props;
+    dispatch(submitLogin(this.state.details));
+  }
 
   render() {
     return (
@@ -31,6 +54,7 @@ export default class HomeScreen extends React.Component {
             <TextInput
                 style={styles.usernameInput}
                 placeholder="Username..."
+                onChangeText={(username) => this.setState({username})}
             />
           </View>
 
@@ -38,17 +62,15 @@ export default class HomeScreen extends React.Component {
             <TextInput
                 style={styles.passwordInput}
                 placeholder="Password..."
+                onChangeText={(password) => this.setState({password})}
             />
           </View>
-
 
         </View>
 
         <View style={styles.SignUpBox}>
 
         </View>
-
-
 
       </View>
     );
