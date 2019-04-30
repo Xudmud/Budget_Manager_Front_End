@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, TextInput, Button} from 'react-native';
+import { Text, View, StyleSheet, Image, TextInput, Button, TouchableOpacity} from 'react-native';
 import {Constants} from 'expo';
-import Config from 'react-native-config';
+import {AsyncStorage} from 'react-native';
+import constants from '../constants/states';
 
 export default class Login extends React.Component
 {
     constructor(){
         super();
         this.handlePress = this.handlePress.bind(this);
+        this.changeToSignUp = this.changeToSignUp.bind(this);
 
         this.state = {
             username: "",
@@ -19,7 +21,7 @@ export default class Login extends React.Component
         var json = {
             username: this.state.username,
             password: this.state.password
-        }
+        };
         var uri = 'https://budget-manager-server.herokuapp.com/signin';
         fetch(uri, {
             "method": "POST",
@@ -29,12 +31,38 @@ export default class Login extends React.Component
             },
             "body": JSON.stringify(json),
         })
-            .then(function(res) {
-                console.log(res);
-                return res;
+            .then((response) => response.json())
+            .then((responseJson) => {
+                constants.LOGGED_IN = true;
+
+                var _storeData = async () => {
+                    try {
+                        await AsyncStorage.setItem('token', responseJson.token);
+                    } catch (error) {
+                        // Error saving data
+                    }
+                };
+
+                var _retrieveData = async () => {
+                    try {
+                        const value = await AsyncStorage.getItem('token');
+                        if (value !== null) {
+                            // We have data!!
+                            console.log(value);
+                        }
+                    } catch (error) {
+                        // Error retrieving data
+                    }
+                };
+
+                return responseJson.token;
             })
     };
 
+    changeToSignUp(){
+        console.log("Hi");
+        constants.SIGNUP = true;
+    }
 
     render()
     {
@@ -52,25 +80,24 @@ export default class Login extends React.Component
                         placeholder="username"
                         onChangeText={(username) => this.setState({username})}
                     />
-
                     <TextInput
                         style={styles.textInput}
                         placeholder="password"
                         onChangeText={(password) => this.setState({password})}
                     />
                 </View>
-
                 <View style={styles.container}>
-                    <Text style={styles.text}> Don't have an account? Sign Up
+                    <Text style={styles.text}>
+                        Don't have an account? Sign Up
                     </Text>
+
                     <Button
-                        title="Sign Up"
+                        title="Sign In"
                         color="#8FD5CB"
                         onPress={this.handlePress}
                     />
                 </View>
             </View>
-
         );
     }
 }
