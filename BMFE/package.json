@@ -1,20 +1,23 @@
 {
+  "name": "signin",
+  "version": "0.0.0",
+  "description": "Basic Hello World program. Look at the notes to explain the lines of code.",
+  "author": null,
+  "private": true,
   "main": "node_modules/expo/AppEntry.js",
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "eject": "expo eject"
-  },
   "dependencies": {
     "expo": "^32.0.0",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
-    "react-native-config": "^0.11.7",
-    "react-native-dotenv": "^0.2.0"
-  },
-  "devDependencies": {
-    "babel-preset-expo": "^5.0.0"
-  },
-  "private": true
+    "axios": "0.18.0",
+    "react-donut-chart": "1.1.8",
+    "react-native-config": "0.11.7",
+    "react-native-material-bottom-navigation": "1.0.3",
+    "react-native-paper": "2.2.8",
+    "react-native-pie-chart": "1.0.13",
+    "react-native-vector-icons": "6.4.2",
+    "react-navigation": "3.0.0-rc.5",
+    "react-navigation-material-bottom-tabs": "1.0.0",
+    "request": "2.88.0"
+  }
 }
